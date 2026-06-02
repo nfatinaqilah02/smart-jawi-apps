@@ -13,15 +13,15 @@ export default function LearnScreen() {
 
       <Text style={styles.pageTitle}>BELAJAR JAWI</Text>
 
-      <Pressable style={styles.button} onPress={() => router.push('/huruf')}>
+      <Pressable style={styles.button} onPress={() => router.push('/belajar_huruf')}>
         <Text style={styles.buttonText}>KENAL HURUF JAWI</Text>
       </Pressable>
 
-      <Pressable style={styles.button} onPress={() => router.push('/nombor')}>
+      <Pressable style={styles.button} onPress={() => router.push('/belajar_nombor')}>
         <Text style={styles.buttonText}>KENAL NOMBOR JAWI</Text>
       </Pressable>
 
-      <Pressable style={styles.button} onPress={() => router.push('/sukukata')}>
+      <Pressable style={styles.button} onPress={() => router.push('/belajar_sukukata')}>
         <Text style={styles.buttonText}>SUKU KATA JAWI</Text>
       </Pressable>
     </View>

@@ -2,7 +2,6 @@ import { useAudioPlayer } from 'expo-audio';
 import { useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { Alert, Animated, Pressable, StyleSheet, Text, View } from 'react-native';
-import Svg, { Line } from 'react-native-svg';
 
 export default function PadankanScreen() {
   const router = useRouter();
@@ -18,7 +17,6 @@ export default function PadankanScreen() {
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [showLine, setShowLine] = useState(false);
 
   const current = questions[index];
 
@@ -34,8 +32,9 @@ export default function PadankanScreen() {
     ]).start();
   };
 
-  const resetQuestion = () => {
-    setShowLine(false);
+  const restartGame = () => {
+    setIndex(0);
+    setScore(0);
     setSelectedAnswer(null);
   };
 
@@ -46,14 +45,8 @@ export default function PadankanScreen() {
     ]);
   };
 
-  const restartGame = () => {
-    setIndex(0);
-    setScore(0);
-    resetQuestion();
-  };
-
   const goNext = (newScore: number) => {
-    resetQuestion();
+    setSelectedAnswer(null);
 
     if (index < questions.length - 1) {
       setIndex(index + 1);
@@ -67,7 +60,6 @@ export default function PadankanScreen() {
     setSelectedAnswer(option);
 
     if (option === current.answer) {
-      setShowLine(true);
       correctSound.seekTo(0);
       correctSound.play();
 
@@ -78,7 +70,6 @@ export default function PadankanScreen() {
         { text: 'OK', onPress: () => goNext(newScore) },
       ]);
     } else {
-      setShowLine(false);
       wrongSound.seekTo(0);
       wrongSound.play();
 
@@ -88,9 +79,6 @@ export default function PadankanScreen() {
     }
   };
 
-  const selectedIndex = current.options.indexOf(selectedAnswer ?? '');
-  const lineX = selectedIndex === 0 ? 67 : selectedIndex === 1 ? 155 : 243;
-
   return (
     <View style={styles.container}>
       <Text style={styles.logo}>SMART JAWI</Text>
@@ -99,37 +87,23 @@ export default function PadankanScreen() {
       <Text style={styles.title}>PADANKAN GAMBAR DAN HURUF YANG BETUL</Text>
 
       <Animated.View style={[styles.card, { transform: [{ scale: scaleAnim }] }]}>
-        <View style={styles.matchArea}>
-          {showLine && (
-            <Svg style={StyleSheet.absoluteFill}>
-              <Line
-                x1="155"
-                y1="160"
-                x2={lineX}
-                y2="245"
-                stroke="#2ecc71"
-                strokeWidth="6"
-              />
-            </Svg>
-          )}
+        <Text style={styles.word}>{current.soalan}</Text>
+        <Text style={styles.image}>{current.gambar}</Text>
 
-          <Text style={styles.word}>{current.soalan}</Text>
-          <Text style={styles.image}>{current.gambar}</Text>
-
-          <View style={styles.options}>
-            {current.options.map((option, i) => (
-              <Pressable
-                key={i}
-                style={[
-                  styles.option,
-                  selectedAnswer === option && styles.selectedOption,
-                ]}
-                onPress={() => checkAnswer(option)}
-              >
-                <Text style={styles.optionText}>{option}</Text>
-              </Pressable>
-            ))}
-          </View>
+        <View style={styles.options}>
+          {current.options.map((option, i) => (
+            <Pressable
+              key={i}
+              style={[
+                styles.option,
+                selectedAnswer === option &&
+                  (option === current.answer ? styles.correctOption : styles.wrongOption),
+              ]}
+              onPress={() => checkAnswer(option)}
+            >
+              <Text style={styles.optionText}>{option}</Text>
+            </Pressable>
+          ))}
         </View>
       </Animated.View>
 
@@ -174,22 +148,17 @@ const styles = StyleSheet.create({
     width: 310,
     backgroundColor: '#fff3dc',
     borderRadius: 20,
-    padding: 20,
+    padding: 25,
     alignItems: 'center',
-  },
-  matchArea: {
-    width: 290,
-    height: 330,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    position: 'relative',
   },
   word: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: 'bold',
+    marginBottom: 10,
   },
   image: {
-    fontSize: 85,
+    fontSize: 90,
+    marginBottom: 25,
   },
   options: {
     flexDirection: 'row',
@@ -203,8 +172,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  selectedOption: {
-    backgroundColor: '#90ee90',
+  correctOption: {
+    backgroundColor: '#2ecc71',
+  },
+  wrongOption: {
+    backgroundColor: '#e74c3c',
   },
   optionText: {
     fontSize: 45,

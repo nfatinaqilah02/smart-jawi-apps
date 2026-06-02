@@ -11,15 +11,15 @@ export default function QuizScreen() {
         <Text style={styles.logo}>SMART JAWI</Text>
       </View>
 
-      <Pressable style={styles.button} onPress={() => router.push('/padankan')}>
+      <Pressable style={styles.button} onPress={() => router.push('/quiz_padankan')}>
         <Text style={styles.buttonText}>PADANKAN HURUF</Text>
       </Pressable>
 
-      <Pressable style={styles.button} onPress={() => router.push('/dengar')}>
+      <Pressable style={styles.button} onPress={() => router.push('/quiz_dengar')}>
         <Text style={styles.buttonText}>DENGAR & PILIH</Text>
       </Pressable>
 
-      <Pressable style={styles.button} onPress={() => router.push('/mengeja')}>
+      <Pressable style={styles.button} onPress={() => router.push('/quiz_mengeja')}>
         <Text style={styles.buttonText}>BELAJAR MENGEJA</Text>
       </Pressable>
     </View>

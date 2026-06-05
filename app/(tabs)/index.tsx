@@ -17,15 +17,13 @@ export default function HomeScreen() {
       resizeMode="stretch"
     >
       <View style={styles.overlay}>
-
         <View style={styles.buttonContainer}>
-
           <Pressable
             style={styles.button}
             onPress={() => router.push('/belajar')}
           >
-            <Text style={styles.buttonText}>
-              BELAJAR JAWI
+            <Text style={styles.belajarText}>
+               BELAJAR JAWI
             </Text>
           </Pressable>
 
@@ -33,8 +31,8 @@ export default function HomeScreen() {
             style={styles.button}
             onPress={() => router.push('/quiz')}
           >
-            <Text style={styles.buttonText}>
-              JOM MAIN GAME
+            <Text style={styles.gameText}>
+              QUIZ & GAME
             </Text>
           </Pressable>
 
@@ -42,13 +40,11 @@ export default function HomeScreen() {
             style={styles.button}
             onPress={() => router.push('/lagu')}
           >
-            <Text style={styles.buttonText}>
-              JOM MENYANYI
+            <Text style={styles.laguText}>
+              LAGU JAWI
             </Text>
           </Pressable>
-
         </View>
-
       </View>
     </ImageBackground>
   );
@@ -68,22 +64,24 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    marginTop: 30,
+    marginTop: -10, // adjust kalau nak naik/turun
+    alignItems: 'center',
   },
 
   button: {
-    width: 270,
-    height: 75,
-    backgroundColor: '#A7D820',
-    borderRadius: 18,
+    width: 250,
+    height: 65,
 
+    backgroundColor: '#A7D820',
+
+    borderRadius: 18,
     borderWidth: 3,
     borderColor: '#8E2DE2',
 
     justifyContent: 'center',
     alignItems: 'center',
 
-    marginBottom: 20,
+    marginBottom: 18,
 
     shadowColor: '#000',
     shadowOffset: {
@@ -96,9 +94,21 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
 
-  buttonText: {
+  belajarText: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#FF5F00',
+    color: '#0066FF', // biru
+  },
+
+  gameText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#FF1493', // hot pink
+  },
+
+  laguText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#C65D3B', // orange brick
   },
 });

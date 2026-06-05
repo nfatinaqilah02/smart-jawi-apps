@@ -1,191 +1,225 @@
-import { useAudioPlayer } from 'expo-audio';
-import { useRouter } from 'expo-router';
-import { useRef, useState } from 'react';
-import { Alert, Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import {
+  Alert,
+  Image,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
-export default function PadankanScreen() {
-  const router = useRouter();
-
-  const questions = [
-    { gambar: '👕', soalan: 'BAJU', answer: 'ب', options: ['ت', 'ب', 'ك'] },
-    { gambar: '👟', soalan: 'KASUT', answer: 'ك', options: ['ك', 'ب', 'ت'] },
-    { gambar: '🧺', soalan: 'BAKUL', answer: 'ب', options: ['ن', 'ب', 'م'] },
-    { gambar: '🐟', soalan: 'IKAN', answer: 'ا', options: ['ا', 'س', 'م'] },
-    { gambar: '🌹', soalan: 'BUNGA', answer: 'ب', options: ['ج', 'ب', 'د'] },
+export default function QuizPadankanScreen() {
+  const allQuestions = [
+    {
+      image: require('../assets/images/buku.png'),
+      answer: 'ب',
+      options: ['ب', 'ت', 'ن'],
+    },
+    {
+      image: require('../assets/images/mata.png'),
+      answer: 'م',
+      options: ['م', 'ك', 'ب'],
+    },
+    {
+      image: require('../assets/images/nun_nenas.png'),
+      answer: 'ن',
+      options: ['ن', 'ب', 'ت'],
+    },
+    {
+      image: require('../assets/images/kaf_kucing.png'),
+      answer: 'ك',
+      options: ['ك', 'م', 'ن'],
+    },
+    {
+      image: require('../assets/images/ta_tali.png'),
+      answer: 'ت',
+      options: ['ت', 'ب', 'ك'],
+    },
   ];
 
-  const [index, setIndex] = useState(0);
+  const [questions] = useState(
+    [...allQuestions].sort(() => Math.random() - 0.5)
+  );
+
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
-  const current = questions[index];
+  const current = questions[currentQuestion];
 
-  const correctSound = useAudioPlayer(require('../assets/audio/correct.mp3'));
-  const wrongSound = useAudioPlayer(require('../assets/audio/wrong.mp3'));
+  const checkAnswer = (selectedAnswer: string) => {
+    let newScore = score;
 
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-
-  const animate = () => {
-    Animated.sequence([
-      Animated.timing(scaleAnim, { toValue: 1.05, duration: 150, useNativeDriver: true }),
-      Animated.timing(scaleAnim, { toValue: 1, duration: 150, useNativeDriver: true }),
-    ]).start();
-  };
-
-  const restartGame = () => {
-    setIndex(0);
-    setScore(0);
-    setSelectedAnswer(null);
-  };
-
-  const finishQuiz = (finalScore: number) => {
-    Alert.alert('Selesai 🎉', `Markah anda: ${finalScore}/5`, [
-      { text: 'Ulang', onPress: restartGame },
-      { text: 'Keluar', onPress: () => router.push('/quiz') },
-    ]);
-  };
-
-  const goNext = (newScore: number) => {
-    setSelectedAnswer(null);
-
-    if (index < questions.length - 1) {
-      setIndex(index + 1);
-    } else {
-      finishQuiz(newScore);
-    }
-  };
-
-  const checkAnswer = (option: string) => {
-    animate();
-    setSelectedAnswer(option);
-
-    if (option === current.answer) {
-      correctSound.seekTo(0);
-      correctSound.play();
-
-      const newScore = score + 1;
+    if (selectedAnswer === current.answer) {
+      newScore = score + 1;
       setScore(newScore);
+    }
 
-      Alert.alert('Betul!', 'Tahniah 🎉', [
-        { text: 'OK', onPress: () => goNext(newScore) },
-      ]);
+    // Soalan seterusnya
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
     } else {
-      wrongSound.seekTo(0);
-      wrongSound.play();
-
-      Alert.alert('Salah', `Jawapan betul ialah ${current.answer}`, [
-        { text: 'OK', onPress: () => goNext(score) },
-      ]);
+      // Tamat quiz
+      if (newScore >= 4) {
+        Alert.alert(
+          '🎉 Tahniah!',
+          `Skor Anda: ${newScore}/5`,
+          [
+            {
+              text: 'Main Lagi',
+              onPress: () => {
+                setCurrentQuestion(0);
+                setScore(0);
+              },
+            },
+            {
+              text: 'Keluar',
+              style: 'cancel',
+            },
+          ]
+        );
+      } else {
+        Alert.alert(
+          '🙂 Cuba Lagi',
+          `Skor Anda: ${newScore}/5`,
+          [
+            {
+              text: 'Cuba Lagi',
+              onPress: () => {
+                setCurrentQuestion(0);
+                setScore(0);
+              },
+            },
+            {
+              text: 'Keluar',
+              style: 'cancel',
+            },
+          ]
+        );
+      }
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.logo}>SMART JAWI</Text>
-      <Text style={styles.score}>Markah: {score}</Text>
+    <ImageBackground
+      source={require('../assets/images/background.png')}
+      style={styles.background}
+      resizeMode="stretch"
+    >
+      <View style={styles.container}>
+        <View style={styles.titleBox}>
+          <Text style={styles.title}>
+            PILIH HURUF JAWI
+          </Text>
+          <Text style={styles.title}>
+            YANG BETUL
+          </Text>
+        </View>
 
-      <Text style={styles.title}>PADANKAN GAMBAR DAN HURUF YANG BETUL</Text>
+        <Text style={styles.progress}>
+          SOALAN {currentQuestion + 1}/5
+        </Text>
 
-      <Animated.View style={[styles.card, { transform: [{ scale: scaleAnim }] }]}>
-        <Text style={styles.word}>{current.soalan}</Text>
-        <Text style={styles.image}>{current.gambar}</Text>
+        <Text style={styles.score}>
+          SKOR: {score}
+        </Text>
 
-        <View style={styles.options}>
-          {current.options.map((option, i) => (
+        <View style={styles.card}>
+          <Image
+            source={current.image}
+            style={styles.image}
+          />
+        </View>
+
+        <View style={styles.answerContainer}>
+          {current.options.map((option, index) => (
             <Pressable
-              key={i}
-              style={[
-                styles.option,
-                selectedAnswer === option &&
-                  (option === current.answer ? styles.correctOption : styles.wrongOption),
-              ]}
+              key={index}
+              style={styles.answerButton}
               onPress={() => checkAnswer(option)}
             >
-              <Text style={styles.optionText}>{option}</Text>
+              <Text style={styles.answerText}>
+                {option}
+              </Text>
             </Pressable>
           ))}
         </View>
-      </Animated.View>
-
-      <Text style={styles.counter}>Soalan {index + 1} / {questions.length}</Text>
-    </View>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
+
   container: {
     flex: 1,
-    backgroundColor: '#9fe8ff',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
   },
-  logo: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 30,
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  score: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 15,
-    color: '#4b2e83',
-  },
-  title: {
-    backgroundColor: '#c47c9b',
-    color: '#ffe94d',
-    fontSize: 16,
-    fontWeight: 'bold',
-    padding: 15,
+
+  titleBox: {
+    marginTop: 150,
+    backgroundColor: '#D89CB5',
     borderRadius: 25,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  card: {
-    width: 310,
-    backgroundColor: '#fff3dc',
-    borderRadius: 20,
-    padding: 25,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
     alignItems: 'center',
   },
-  word: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  image: {
-    fontSize: 90,
-    marginBottom: 25,
-  },
-  options: {
-    flexDirection: 'row',
-    gap: 15,
-  },
-  option: {
-    backgroundColor: '#ffd36b',
-    width: 75,
-    height: 75,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  correctOption: {
-    backgroundColor: '#2ecc71',
-  },
-  wrongOption: {
-    backgroundColor: '#e74c3c',
-  },
-  optionText: {
-    fontSize: 45,
-    color: '#6f4ae6',
+
+  title: {
+    color: '#FFE600',
+    fontSize: 20,
     fontWeight: 'bold',
   },
-  counter: {
+
+  progress: {
     marginTop: 20,
-    fontSize: 16,
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#5E4BFF',
+  },
+
+  score: {
+    marginTop: 5,
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#5E4BFF',
+  },
+
+  card: {
+    width: 250,
+    height: 250,
+    backgroundColor: '#F4CDBD',
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 25,
+  },
+
+  image: {
+    width: 180,
+    height: 180,
+    resizeMode: 'contain',
+  },
+
+  answerContainer: {
+    marginTop: 30,
+    width: '80%',
+  },
+
+  answerButton: {
+    backgroundColor: '#F4CDBD',
+    borderRadius: 20,
+    paddingVertical: 15,
+    marginBottom: 15,
+    alignItems: 'center',
+  },
+
+  answerText: {
+    fontSize: 55,
+    color: '#5E4BFF',
     fontWeight: 'bold',
   },
 });

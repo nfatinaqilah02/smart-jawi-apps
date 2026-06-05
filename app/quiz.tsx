@@ -1,66 +1,114 @@
 import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 export default function QuizScreen() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.cloud}>
-        <Text style={styles.small}>PANDAI JAWI DENGAN</Text>
-        <Text style={styles.logo}>SMART JAWI</Text>
+    <ImageBackground
+      source={require('../assets/images/home_bg.png')}
+      style={styles.background}
+      resizeMode="stretch"
+    >
+      <View style={styles.overlay}>
+        <View style={styles.buttonContainer}>
+
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push('/quiz_padankan')}
+          >
+            <Text style={styles.hurufText}>
+              PADANKAN HURUF
+            </Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push('/quiz_dengar')}
+          >
+            <Text style={styles.nomborText}>
+              DENGAR & PILIH
+            </Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push('/quiz_mengeja')}
+          >
+            <Text style={styles.sukuText}>
+              BELAJAR MENGEJA
+            </Text>
+          </Pressable>
+
+        </View>
       </View>
-
-      <Pressable style={styles.button} onPress={() => router.push('/quiz_padankan')}>
-        <Text style={styles.buttonText}>PADANKAN HURUF</Text>
-      </Pressable>
-
-      <Pressable style={styles.button} onPress={() => router.push('/quiz_dengar')}>
-        <Text style={styles.buttonText}>DENGAR & PILIH</Text>
-      </Pressable>
-
-      <Pressable style={styles.button} onPress={() => router.push('/quiz_mengeja')}>
-        <Text style={styles.buttonText}>BELAJAR MENGEJA</Text>
-      </Pressable>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    backgroundColor: '#9fe8ff',
-    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
+
+  overlay: {
+    flex: 1,
     justifyContent: 'center',
-    padding: 20,
-  },
-  cloud: {
-    backgroundColor: '#fff',
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    borderRadius: 30,
-    marginBottom: 45,
     alignItems: 'center',
   },
-  small: {
-    fontSize: 11,
-    fontWeight: '600',
+
+  buttonContainer: {
+    marginTop: 50,
+    alignItems: 'center',
   },
-  logo: {
-    fontSize: 26,
-    fontWeight: 'bold',
-  },
+
   button: {
-    width: 280,
-    backgroundColor: '#c47c9b',
-    paddingVertical: 20,
+    width: 250,
+    height: 65,
+
+    backgroundColor: '#5B6DFF', // biru
+
     borderRadius: 30,
-    marginBottom: 25,
+
+    justifyContent: 'center',
     alignItems: 'center',
+
+    marginBottom: 20,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+
+    elevation: 8,
   },
-  buttonText: {
-    color: '#ffe94d',
-    fontSize: 18,
+
+  hurufText: {
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#FFE600', // kuning
+  },
+
+  nomborText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#7CFF4D', // hijau
+  },
+
+  sukuText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FF4D4D', // merah
   },
 });

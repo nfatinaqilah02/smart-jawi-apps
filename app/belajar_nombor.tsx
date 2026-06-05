@@ -1,132 +1,215 @@
+import { useFonts } from 'expo-font';
 import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 export default function NomborScreen() {
-  const nomborList = [
-    { jawi: '١', nama: 'SATU' },
-    { jawi: '٢', nama: 'DUA' },
-    { jawi: '٣', nama: 'TIGA' },
-    { jawi: '٤', nama: 'EMPAT' },
-    { jawi: '٥', nama: 'LIMA' },
-    { jawi: '٦', nama: 'ENAM' },
-    { jawi: '٧', nama: 'TUJUH' },
-    { jawi: '٨', nama: 'LAPAN' },
-    { jawi: '٩', nama: 'SEMBILAN' },
-    { jawi: '١٠', nama: 'SEPULUH' },
-  ];
+  const [fontsLoaded] = useFonts({
+  Amiri: require('../assets/fonts/Amiri-Regular.ttf'),
+});
 
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nomborList = [
+    {
+      jawi: '١',
+      nombor: '1 - SATU',
+      image: require('../assets/images/1_ayam.png'),
+    },
+    {
+      jawi: '٢',
+      nombor: '2 - DUA',
+      image: require('../assets/images/2_ayam.png'),
+    },
+    {
+      jawi: '٣',
+      nombor: '3 - TIGA',
+      image: require('../assets/images/3_ayam.png'),
+    },
+    {
+      jawi: '٤',
+      nombor: '4 - EMPAT',
+      image: require('../assets/images/4_ayam.png'),
+    },
+    {
+      jawi: '٥',
+      nombor: '5 - LIMA',
+      image: require('../assets/images/5_ayam.png'),
+    },
+    {
+      jawi: '٦',
+      nombor: '6 - ENAM',
+      image: require('../assets/images/6_ayam.png'),
+    },
+    {
+      jawi: '٧',
+      nombor: '7 - TUJUH',
+      image: require('../assets/images/7_ayam.png'),
+    },
+    {
+      jawi: '٨',
+      nombor: '8 - LAPAN',
+      image: require('../assets/images/8_ayam.png'),
+    },
+    {
+      jawi: '٩',
+      nombor: '9 - SEMBILAN',
+      image: require('../assets/images/9_ayam.png'),
+    },
+    {
+      jawi: '١٠',
+      nombor: '10 - SEPULUH',
+      image: require('../assets/images/10_ayam.png'),
+    },
+  ];
+
+if (!fontsLoaded) {
+  return null;
+}
+
   const currentItem = nomborList[currentIndex];
 
-  const nextNombor = () => {
+  const nextNumber = () => {
     if (currentIndex < nomborList.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
   };
 
-  const prevNombor = () => {
+  const prevNumber = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     }
   };
 
-  const playSound = () => {
-    Alert.alert('Audio', `Bunyi nombor ${currentItem.nama} nanti keluar sini.`);
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>KENAL NOMBOR JAWI</Text>
+    <ImageBackground
+      source={require('../assets/images/background.png')}
+      style={styles.background}
+      resizeMode="stretch"
+    >
+      <View style={styles.container}>
+        <View style={styles.subButton}>
+          <Text style={styles.subButtonText}>
+            KENAL NOMBOR JAWI
+          </Text>
+        </View>
 
-      <View style={styles.card}>
-        <Text style={styles.jawi}>{currentItem.jawi}</Text>
-        <Text style={styles.nama}>{currentItem.nama}</Text>
+        <View style={styles.cardRow}>
+          <Pressable
+            style={styles.arrowButton}
+            onPress={prevNumber}
+          >
+            <Text style={styles.arrowText}>◀</Text>
+          </Pressable>
+
+          <View style={styles.card}>
+            <Image
+              source={currentItem.image}
+              style={styles.image}
+            />
+
+            <Text style={styles.jawi}>
+              {currentItem.jawi}
+            </Text>
+
+            <Text style={styles.nama}>
+              {currentItem.nombor}
+            </Text>
+          </View>
+
+          <Pressable
+            style={styles.arrowButton}
+            onPress={nextNumber}
+          >
+            <Text style={styles.arrowText}>▶</Text>
+          </Pressable>
+        </View>
       </View>
-
-      <View style={styles.arrowRow}>
-        <Pressable style={styles.arrowButton} onPress={prevNombor}>
-          <Text style={styles.arrowText}>◀</Text>
-        </Pressable>
-
-        <Text style={styles.counter}>
-          {currentIndex + 1} / {nomborList.length}
-        </Text>
-
-        <Pressable style={styles.arrowButton} onPress={nextNombor}>
-          <Text style={styles.arrowText}>▶</Text>
-        </Pressable>
-      </View>
-
-      <Pressable style={styles.soundButton} onPress={playSound}>
-        <Text style={styles.icon}>🔊</Text>
-      </Pressable>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
+
   container: {
     flex: 1,
-    backgroundColor: '#9fe8ff',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
   },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
+
+  subButton: {
+    marginTop: 160,
+    backgroundColor: '#5E4BFF',
+    borderRadius: 30,
+    paddingVertical: 12,
+    paddingHorizontal: 35,
     marginBottom: 25,
-    color: '#4b2e83',
   },
+
+  subButtonText: {
+    color: '#32CD32',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+
+  cardRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  arrowButton: {
+    width: 55,
+    height: 55,
+    borderRadius: 30,
+    backgroundColor: '#5E4BFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: -2,
+  },
+
+  arrowText: {
+    color: '#FFFFFF',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+
   card: {
     width: 280,
-    height: 320,
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    justifyContent: 'center',
+    height: 400,
+    backgroundColor: '#F2F2F2',
+    borderRadius: 25,
     alignItems: 'center',
-    marginBottom: 25,
+    justifyContent: 'center',
   },
-  jawi: {
-    fontSize: 110,
+
+  image: {
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
+    marginBottom: -90,
+  },
+
+    jawi: {
+    fontFamily: 'Amiri',
+    fontSize: 140,
     color: '#000',
+    marginBottom: -60,
+    marginTop: 30,
+
   },
+
   nama: {
     fontSize: 28,
     fontWeight: 'bold',
-  },
-  arrowRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 20,
-    marginBottom: 25,
-  },
-  arrowButton: {
-    backgroundColor: '#6f4ae6',
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  arrowText: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  counter: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  soundButton: {
-    backgroundColor: '#ffe14d',
-    width: 60,
-    height: 60,
-    borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    fontSize: 24,
+    color: '#222',
+    marginTop: 20,
   },
 });

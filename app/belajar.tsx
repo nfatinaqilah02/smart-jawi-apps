@@ -1,77 +1,114 @@
 import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
-export default function LearnScreen() {
+export default function BelajarScreen() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.cloud}>
-        <Text style={styles.cloudText}>PANDAI JAWI DENGAN</Text>
-        <Text style={styles.cloudTitle}>SMART JAWI</Text>
+    <ImageBackground
+      source={require('../assets/images/home_bg.png')}
+      style={styles.background}
+      resizeMode="stretch"
+    >
+      <View style={styles.overlay}>
+        <View style={styles.buttonContainer}>
+
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push('/belajar_huruf')}
+          >
+            <Text style={styles.hurufText}>
+              KENAL HURUF JAWI
+            </Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push('/belajar_nombor')}
+          >
+            <Text style={styles.nomborText}>
+              KENAL NOMBOR JAWI
+            </Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push('/belajar_sukukata')}
+          >
+            <Text style={styles.sukuText}>
+              SUKU KATA JAWI
+            </Text>
+          </Pressable>
+
+        </View>
       </View>
-
-      <Text style={styles.pageTitle}>BELAJAR JAWI</Text>
-
-      <Pressable style={styles.button} onPress={() => router.push('/belajar_huruf')}>
-        <Text style={styles.buttonText}>KENAL HURUF JAWI</Text>
-      </Pressable>
-
-      <Pressable style={styles.button} onPress={() => router.push('/belajar_nombor')}>
-        <Text style={styles.buttonText}>KENAL NOMBOR JAWI</Text>
-      </Pressable>
-
-      <Pressable style={styles.button} onPress={() => router.push('/belajar_sukukata')}>
-        <Text style={styles.buttonText}>SUKU KATA JAWI</Text>
-      </Pressable>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    backgroundColor: '#9ee3ff',
-    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
+
+  overlay: {
+    flex: 1,
     justifyContent: 'center',
-    padding: 20,
-  },
-  cloud: {
-    backgroundColor: '#ffffff',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 30,
-    marginBottom: 30,
     alignItems: 'center',
   },
-  cloudText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#333',
+
+  buttonContainer: {
+    marginTop: 50,
+    alignItems: 'center',
   },
-  cloudTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#222',
-  },
-  pageTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#4b2e83',
-    marginBottom: 30,
-  },
+
   button: {
-    width: 260,
-    backgroundColor: '#6f4ae6',
-    paddingVertical: 18,
+    width: 250,
+    height: 65,
+
+    backgroundColor: '#5B6DFF', // biru
+
     borderRadius: 30,
-    marginBottom: 20,
+
+    justifyContent: 'center',
     alignItems: 'center',
-    elevation: 4,
+
+    marginBottom: 20,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+
+    elevation: 8,
   },
-  buttonText: {
-    color: '#ffe600',
-    fontSize: 18,
+
+  hurufText: {
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#FFE600', // kuning
+  },
+
+  nomborText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#7CFF4D', // hijau
+  },
+
+  sukuText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FF4D4D', // merah
   },
 });

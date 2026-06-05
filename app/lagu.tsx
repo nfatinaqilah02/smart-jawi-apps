@@ -1,66 +1,114 @@
 import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
-export default function LaguScreen() {
+export default function QuizScreen() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>🎵 PILIH LAGU</Text>
+    <ImageBackground
+      source={require('../assets/images/home_bg.png')}
+      style={styles.background}
+      resizeMode="stretch"
+    >
+      <View style={styles.overlay}>
+        <View style={styles.buttonContainer}>
 
-      <Pressable
-        style={styles.button}
-        onPress={() => router.push('/lagu_alifbata')}
-      >
-        <Text style={styles.buttonText}>LAGU ALIF BA TA</Text>
-      </Pressable>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push('/lagu_nombor')}
+          >
+            <Text style={styles.hurufText}>
+              LAGU ALIF BA TA
+            </Text>
+          </Pressable>
 
-      <Pressable
-        style={styles.button}
-        onPress={() => router.push('/lagu_nombor')}
-      >
-        <Text style={styles.buttonText}>LAGU NOMBOR JAWI</Text>
-      </Pressable>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push('/lagu_nombor')}
+          >
+            <Text style={styles.nomborText}>
+              LAGU NOMBOR JAWI
+            </Text>
+          </Pressable>
 
-      <Pressable
-        style={styles.button}
-        onPress={() => router.push('/lagu_haiwan')}
-      >
-        <Text style={styles.buttonText}>LAGU HAIWAN</Text>
-      </Pressable>
-    </View>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push('/lagu_haiwan')}
+          >
+            <Text style={styles.sukuText}>
+              LAGU HAIWAN
+            </Text>
+          </Pressable>
+
+        </View>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    backgroundColor: '#9fe8ff',
+    width: '100%',
+    height: '100%',
+  },
+
+  overlay: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
 
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 40,
-    color: '#4b2e83',
+  buttonContainer: {
+    marginTop: 50,
+    alignItems: 'center',
   },
 
   button: {
-    width: 280,
-    backgroundColor: '#9be22d',
-    paddingVertical: 20,
-    borderRadius: 25,
+    width: 250,
+    height: 65,
+
+    backgroundColor: '#5B6DFF', // biru
+
+    borderRadius: 30,
+
+    justifyContent: 'center',
+    alignItems: 'center',
+
     marginBottom: 20,
-    borderWidth: 3,
-    borderColor: '#7a3cff',
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+
+    elevation: 8,
   },
 
-  buttonText: {
-    textAlign: 'center',
-    fontSize: 18,
+  hurufText: {
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#ff5a00',
+    color: '#FFE600', // kuning
+  },
+
+  nomborText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#7CFF4D', // hijau
+  },
+
+  sukuText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FF4D4D', // merah
   },
 });

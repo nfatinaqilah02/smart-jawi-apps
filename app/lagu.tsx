@@ -21,7 +21,7 @@ export default function QuizScreen() {
 
           <Pressable
             style={styles.button}
-            onPress={() => router.push('/lagu_nombor')}
+            onPress={() => router.push('/lagu_alifbata')}
           >
             <Text style={styles.hurufText}>
               LAGU ALIF BA TA

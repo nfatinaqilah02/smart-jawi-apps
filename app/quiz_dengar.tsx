@@ -2,12 +2,13 @@ import { useAudioPlayer } from 'expo-audio';
 import { useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import {
-    Alert,
-    Animated,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  Alert,
+  Animated,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 
 export default function DengarPilihScreen() {
@@ -139,6 +140,11 @@ export default function DengarPilihScreen() {
   };
 
   return (
+  <ImageBackground
+    source={require('../assets/images/background.png')}
+    style={styles.background}
+    resizeMode="stretch"
+  >
     <View style={styles.container}>
       <Text style={styles.logo}>SMART JAWI</Text>
 
@@ -192,17 +198,17 @@ export default function DengarPilihScreen() {
         Soalan {index + 1} / {questions.length}
       </Text>
     </View>
+  </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#9fe8ff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: 20,
+},
 
   logo: {
     backgroundColor: '#fff',
@@ -291,4 +297,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-});
+
+  background: {
+  flex: 1,
+  },
+  });

@@ -1,3 +1,4 @@
+import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import {
   Alert,
@@ -10,6 +11,7 @@ import {
 } from 'react-native';
 
 export default function QuizPadankanScreen() {
+
   const allQuestions = [
     {
       image: require('../assets/images/buku.png'),
@@ -36,7 +38,12 @@ export default function QuizPadankanScreen() {
       answer: 'ت',
       options: ['ت', 'ب', 'ك'],
     },
+
   ];
+  
+  const [fontsLoaded] = useFonts({
+      Amiri: require('../assets/fonts/Amiri-Regular.ttf'),
+    });
 
   const [questions] = useState(
     [...allQuestions].sort(() => Math.random() - 0.5)
@@ -44,6 +51,10 @@ export default function QuizPadankanScreen() {
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const current = questions[currentQuestion];
 
@@ -175,51 +186,59 @@ const styles = StyleSheet.create({
   },
 
   progress: {
-    marginTop: 20,
-    fontSize: 22,
+    marginTop: 15,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#5E4BFF',
   },
 
   score: {
-    marginTop: 5,
-    fontSize: 22,
+    marginTop: 2,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#5E4BFF',
   },
 
   card: {
-    width: 250,
-    height: 250,
-    backgroundColor: '#F4CDBD',
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 25,
-  },
+  width: 170,
+  height: 170,
+  backgroundColor: '#F4CDBD',
+  borderRadius: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: 15,
+},
 
   image: {
-    width: 180,
-    height: 180,
-    resizeMode: 'contain',
-  },
+  width: 140,
+  height: 140,
+  resizeMode: 'contain',
+},
 
   answerContainer: {
-    marginTop: 30,
-    width: '80%',
-  },
-
-  answerButton: {
-    backgroundColor: '#F4CDBD',
-    borderRadius: 20,
-    paddingVertical: 15,
-    marginBottom: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
+    width: '100%',
+    marginTop: 20,
   },
 
-  answerText: {
-    fontSize: 55,
-    color: '#5E4BFF',
-    fontWeight: 'bold',
-  },
+    answerButton: {
+      width: 85,
+      height: 85,
+      backgroundColor: '#F4CDBD',
+      borderRadius: 20,
+
+      justifyContent: 'center',
+      alignItems: 'center',
+
+      elevation: 3,
+    },
+
+    answerText: {
+      fontFamily: 'Amiri',
+      fontSize: 50,
+      color: '#6C4EE3',
+      textAlign: 'center',
+    },
 });
